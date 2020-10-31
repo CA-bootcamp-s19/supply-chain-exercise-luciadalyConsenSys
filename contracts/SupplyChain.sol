@@ -28,7 +28,7 @@ contract SupplyChain {
     Received
     (declaring them in this order is important for testing)
   */
-  enum State{ ForSale, sold, shipped, received }
+  enum State{ ForSale, Sold, Shipped, Received }
 
   /* Create a struct named Item.
     Here, add a name, sku, price, state, seller, and buyer
@@ -95,19 +95,19 @@ contract SupplyChain {
 
 	/// modifier sold
 	modifier sold(uint _sku) {
-	  require(items[_sku].state == State.sold);
+	  require(items[_sku].state == State.Sold);
 	  _;
 	}
 
 	/// modifier shipped
 	modifier shipped(uint _sku) {
-	  require(items[_sku].state == State.shipped);
+	  require(items[_sku].state == State.Shipped);
 	  _;
 	}
 
 	/// modifier received
 	modifier received(uint _sku) {
-	  require(items[_sku].state == State.received);
+	  require(items[_sku].state == State.Received);
 	  _;
 	}
 
@@ -136,7 +136,7 @@ contract SupplyChain {
 		checkValue(sku)
 	{
 		items[sku].buyer = msg.sender;
-		items[sku].state = State.sold;
+		items[sku].state = State.Sold;
 
 		emit LogSold(sku);
 	}
@@ -148,7 +148,7 @@ contract SupplyChain {
 		sold(sku)
 		verifyCaller(items[sku].seller)
 	{
-		items[sku].state = State.shipped;
+		items[sku].state = State.Shipped;
 		emit LogShipped(sku);
 	}
 
@@ -159,7 +159,7 @@ contract SupplyChain {
 		shipped(sku)
 		verifyCaller(items[sku].buyer)
 	{
-		items[sku].state = State.received;
+		items[sku].state = State.Received;
 		emit LogReceived(sku);
 	}
 
