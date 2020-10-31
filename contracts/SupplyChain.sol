@@ -132,10 +132,10 @@ contract SupplyChain {
 		public
 		payable
 		forSale(sku)
-		paidEnough(Items[sku].price)
+		paidEnough(items[sku].price)
 		checkValue(sku)
 	{
-		Items[sku].buyer = msg.sender;
+		items[sku].buyer = msg.sender;
 		items[sku].state = State.SOLD;
 
 		emit LogSold(sku);
@@ -146,9 +146,9 @@ contract SupplyChain {
 	function shipItem(uint sku)
 		public
 		sold(sku)
-		verifyCaller(Items[sku].seller)
+		verifyCaller(items[sku].seller)
 	{
-		Items[sku].state = State.SHIPPED;
+		items[sku].state = State.SHIPPED;
 		emit LogShipped(sku);
 	}
 
@@ -157,9 +157,9 @@ contract SupplyChain {
 	function receiveItem(uint sku)
 		public
 		shipped(sku)
-		verifyCaller(Items[sku].buyer)
+		verifyCaller(items[sku].buyer)
 	{
-		Items[sku].state = State.RECEIVED;
+		items[sku].state = State.RECEIVED;
 		emit LogReceived(sku);
 	}
 
