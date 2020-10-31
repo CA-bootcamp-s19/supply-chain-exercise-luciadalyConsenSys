@@ -28,7 +28,7 @@ contract SupplyChain {
     Received
     (declaring them in this order is important for testing)
   */
-  enum State{ FORSALE, SOLD, SHIPPED, RECEIVED }
+  enum State{ ForSale, sold, shipped, received }
 
   /* Create a struct named Item.
     Here, add a name, sku, price, state, seller, and buyer
@@ -46,7 +46,7 @@ contract SupplyChain {
   }
 
   /* Create 4 events with the same name as each possible State (see above)
-    Prefix each event with "Log" for clarity, so the forSale event will be called "LogForSale"
+    Prefix each event with "Log" for clarity, so the ForSale event will be called "LogForSale"
     Each event should accept one argument, the sku */
 	event LogForSale(uint sku);
 	event LogSold(uint sku);
@@ -78,7 +78,7 @@ contract SupplyChain {
 	}
 
 	/* For each of the following modifiers, use what you learned about modifiers
-	to give them functionality. For example, the forSale modifier should require
+	to give them functionality. For example, the ForSale modifier should require
 	that the item with the given sku has the state ForSale.
 	Note that the uninitialized Item.State is 0, which is also the index of the ForSale value,
 	so checking that Item.State == ForSale is not sufficient to check that an Item is for sale.
@@ -87,27 +87,27 @@ contract SupplyChain {
 	PS: Uncomment the modifier but keep the name for testing purposes!
 	*/
 
-	/// modifier forSale
-	modifier forSale(uint _sku) {
-      require(items[_sku].state == State.FORSALE);
+	/// modifier ForSale
+	modifier ForSale(uint _sku) {
+      require(items[_sku].state == State.ForSale);
       _;
   	}
 
 	/// modifier sold
 	modifier sold(uint _sku) {
-	  require(items[_sku].state == State.SOLD);
+	  require(items[_sku].state == State.sold);
 	  _;
 	}
 
 	/// modifier shipped
 	modifier shipped(uint _sku) {
-	  require(items[_sku].state == State.SHIPPED);
+	  require(items[_sku].state == State.shipped);
 	  _;
 	}
 
 	/// modifier received
 	modifier received(uint _sku) {
-	  require(items[_sku].state == State.RECEIVED);
+	  require(items[_sku].state == State.received);
 	  _;
 	}
 
@@ -131,12 +131,12 @@ contract SupplyChain {
 	function buyItem(uint sku)
 		public
 		payable
-		forSale(sku)
+		ForSale(sku)
 		paidEnough(items[sku].price)
 		checkValue(sku)
 	{
 		items[sku].buyer = msg.sender;
-		items[sku].state = State.SOLD;
+		items[sku].state = State.sold;
 
 		emit LogSold(sku);
 	}
@@ -148,7 +148,7 @@ contract SupplyChain {
 		sold(sku)
 		verifyCaller(items[sku].seller)
 	{
-		items[sku].state = State.SHIPPED;
+		items[sku].state = State.shipped;
 		emit LogShipped(sku);
 	}
 
@@ -159,7 +159,7 @@ contract SupplyChain {
 		shipped(sku)
 		verifyCaller(items[sku].buyer)
 	{
-		items[sku].state = State.RECEIVED;
+		items[sku].state = State.received;
 		emit LogReceived(sku);
 	}
 
