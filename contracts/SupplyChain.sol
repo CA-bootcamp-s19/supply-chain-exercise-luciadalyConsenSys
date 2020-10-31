@@ -88,7 +88,7 @@ contract SupplyChain {
 	*/
 
 	/// modifier ForSale
-	modifier ForSale(uint _sku) {
+	modifier forSale(uint _sku) {
       require(items[_sku].state == State.ForSale);
       _;
   	}
@@ -131,7 +131,7 @@ contract SupplyChain {
 	function buyItem(uint sku)
 		public
 		payable
-		ForSale(sku)
+		forSale(sku)
 		paidEnough(items[sku].price)
 		checkValue(sku)
 	{
